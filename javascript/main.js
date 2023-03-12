@@ -133,14 +133,14 @@
                         url:  $form.attr('action'),
                         data: str,
                         beforeSend: function () {
-                            $form.find('.form-submit').append(loading);
+                            $form.find('.loader').addClass('loading');
                         },
-                        success: function( msg ) {
-                            var result, cls;                            
-                            if ( msg === 'Success' ) {result = 'Message Sent Successfully To Email Administrator. ( You can change the email management a very easy way to get the message of customers in the user manual )'; cls = 'msg-success'; } else {result = 'Error sending email.'; cls = 'msg-error'; } $form.prepend(
+                        success: function( result ) {
+                            var text, cls;                        
+                            if ( result.result === 'success' ) {text = 'The message was sent successfully to us! Please wait for our response.'; cls = 'msg-success'; } else {text = 'Error sending message! Please try again.'; cls = 'msg-error'; } $form.prepend(
                                 $('<div />', {
                                     'class': 'flat-alert ' + cls,
-                                    'text' : result
+                                    'text' : text
                                 }).append(
                                     $('<a class="close" href="#"><i class="fa fa-close"></i></a>')
                                 )
@@ -149,12 +149,54 @@
                             $form.find(':input').not('.submit').val('');
                         },
                         complete: function (xhr, status, error_thrown) {
-                            $form.find('.loading').remove();
+                            $form.find('.loader').removeClass('loading');
                         }
                     });
                 }
             });
         }); // each contactform
+    };   
+
+    var ajaxSubcribeForm = function() {  
+        $('#subscribeform').each(function() {
+            $(this).validate({
+                submitHandler: function( form ) {
+                    var $form = $(form),
+                        str = $form.serialize(),
+                        loading = $('<div />', { 'class': 'loading' });
+
+                    $.ajax({
+                        type: "POST",
+                        url:  $form.attr('action'),
+                        data: str,
+                        beforeSend: function () {
+                            $form.find('.loader').addClass('loading');
+                        },
+                        success: function( result ) {
+                            var text1, text2, cls;                        
+                            if ( result.result === 'success' ) {text1 = 'Your email was sent to us!'; text2 = 'Please wait for our response.'; cls = 'msg-success'; } 
+                            else {text1 = 'Error sending email!'; text2 = 'Please try again.'; cls = 'msg-error'; }
+                            $form.prepend(
+                                $('<div />', {
+                                    'class': 'flat-alert ' + cls
+                                }).append(
+                                    $('<p>' + text1 + '</p>')
+                                ).append(
+                                    $('<p>' + text2 + '</p>')
+                                ).append(
+                                    $('<a class="close" href="#"><i class="fa fa-close"></i></a>')
+                                )
+                            );
+
+                            $form.find(':input').not('.submit').val('');
+                        },
+                        complete: function (xhr, status, error_thrown) {
+                            $form.find('.loader').removeClass('loading');
+                        }
+                    });
+                }
+            });
+        }); // each subscribeform
     };   
 
     var alertBox = function() {
@@ -728,8 +770,9 @@
 
     var removePreloader = function() { 
         $(window).load(function() { 
-
-            $('.preloader').css('opacity', 0);
+            setTimeout(function() {
+                $('.preloader').addClass('loaded'); }, 300           
+            ); 
             setTimeout(function() {
                 $('.preloader').hide(); }, 1000           
             ); 
@@ -748,6 +791,7 @@
         responsiveMenu();
         ajaxSubscribe.eventLoad();
         ajaxContactForm();
+        ajaxSubcribeForm();
         alertBox();
         tabs();
         swClick();

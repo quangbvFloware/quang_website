@@ -5841,8 +5841,8 @@ tp-caption.Team-Thumb,
 
 /* Button Blue */
 .tp-caption.flat-button-slider.bg-blue  {
-    border-color: #18ba60;
-    background: #18ba60;
+    border-color: #F5001D;
+    background: #F5001D;
 	padding: 0 24px 0 25px;
 }
 
@@ -5861,8 +5861,8 @@ tp-caption.Team-Thumb,
 
 .tp-caption.flat-button-slider.bg-transparent:hover,
 .tp-caption.flat-button-slider:hover {
-	background-color: #18ba60;
-	border-color:#18ba60;
+	background-color: #F5001D;
+	border-color:#F5001D;
 }
 
 /* Button Blue #2196f3 */
